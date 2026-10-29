@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIOLOGÍA - Fisiología y Biofísica Respiratoria (Facultad de Cs. Médicas - UCCuyo)</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- KaTeX for medical and biochemical LaTeX rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+          onload="renderMathInDocument()"></script>
+  <!-- Chart.js for Hemoglobin Dissociation Curve -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts: Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #f7f9f6;
+      color: #1e293b;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Paleta Institucional UCCuyo (Verde Oliva y Contrastes Biomédicos) */
+    .text-accent { color: #436600; }
+    .bg-accent { background-color: #436600; }
+    .bg-accent-hover:hover { background-color: #324d00; }
+    .bg-accent-light { background-color: #f1f6eb; }
+    .border-accent { border-color: #436600; }
+
+    .text-primary { color: #436600; }
+    .bg-primary { background-color: #436600; }
+    .bg-primary-dark { background-color: #324d00; }
+    .border-primary { border-color: #436600; }
+    
+    .focus-accent:focus {
+      border-color: #436600;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(67, 102, 0, 0.2);
+    }
+    
+    input[type=range] {
+      accent-color: #436600;
+    }
+
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .badge-katex .katex {
+      font-size: 1.05em;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-accent/20 text-gray-800">
+
+  <!-- Cabecera Institucional UCCuyo -->
+  <header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50 no-math">
+    <div class="max-w-7xl mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-xl shadow-md">
+          BIO
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-gray-800 tracking-wide uppercase">BIOLOGÍA CELULAR Y HUMANA</h1>
+          <p class="text-xs text-gray-500 font-semibold">Curso de Ingreso a Medicina (Facultad de Cs. Médicas - UCCuyo)</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <!-- Botón Vademécum Teórico -->
+        <button onclick="openFormulasModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-semibold rounded-lg border border-gray-200 hover:bg-gray-200 transition">
+          <i class="fa-solid fa-book-bookmark text-accent"></i>
+          <span class="hidden sm:inline">Vademécum</span>
+        </button>
+        <!-- Botón Guía de Uso -->
+        <button onclick="openTutorial()" class="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white text-xs font-semibold rounded-lg shadow-sm hover:opacity-90 transition">
+          <i class="fa-solid fa-circle-question"></i>
+          <span>Guía de Uso</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal con Barra Lateral -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 flex flex-col lg:flex-row gap-6">
+    
+    <!-- Menú de Navegación Lateral -->
+    <nav class="w-full lg:w-64 shrink-0 lg:shrink-0 flex flex-row lg:flex-col gap-2 bg-white p-3 rounded-2xl shadow-sm border border-gray-200 overflow-x-auto lg:overflow-x-visible whitespace-nowrap lg:whitespace-normal sticky top-20 h-fit" id="navTabs">
+      <button onclick="cambiarModulo('m1')" data-tab="m1" class="nav-btn bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold transition shadow-sm flex items-center gap-2">
+        <i class="fa-solid fa-compass"></i> <span>1. Procesos & pH</span>
+      </button>
+      <button onclick="cambiarModulo('m2')" data-tab="m2" class="nav-btn text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2">
+        <i class="fa-solid fa-code-branch"></i> <span>2. Vías & Calibre</span>
+      </button>
+      <button onclick="cambiarModulo('m3')" data-tab="m3" class="nav-btn text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2">
+        <i class="fa-solid fa-shield-halved"></i> <span>3. Pleura & Neumotórax</span>
+      </button>
+      <button onclick="cambiarModulo('m4')" data-tab="m4" class="nav-btn text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2">
+        <i class="fa-solid fa-microscope"></i> <span>4. Alvéolo & Ley Fick</span>
+      </button>
+      <button onclick="cambiarModulo('m5')" data-tab="m5" class="nav-btn text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2">
+        <i class="fa-solid fa-scale-balanced"></i> <span>5. Biofísica Gases</span>
+      </button>
+      <button onclick="cambiarModulo('m6')" data-tab="m6" class="nav-btn text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2 border-t lg:border-t border-gray-100">
+        <i class="fa-solid fa-chart-line text-accent"></i> <span>6. Hemoglobina & Bohr</span>
+      </button>
+    </nav>
+
+    <!-- Área de Contenido Dinámico -->
+    <div class="flex-1 space-y-6 min-w-0">
+
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 1: CONCEPTUALIZACIÓN Y FUNCIONES NO RESPIRATORIAS                   -->
+    <!-- ========================================================================= -->
+    <section id="modulo-m1" class="modulo-content space-y-6">
+      <!-- Banner -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-accent mb-6">
+        <div class="max-w-3xl">
+          <div class="flex items-center space-x-2 text-accent text-xs font-semibold tracking-wider uppercase mb-1">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Módulo 1 • Conceptualización de la Respiración y Funciones Integradas</span>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-800 mt-1">Los Tres Procesos Respiratorios vs. Respiración Celular</h2>
+          <p class="text-slate-600 text-sm mt-2 leading-relaxed">
+            Fundamentos biofisiológicos, transporte convectivo y difusivo de gases entre el entorno ambiental y las mitocondrias tisulares, y distinción clave frente a la respiración celular mitocondrial.
+          </p>
+        </div>
+      </div>
+
+        <p class="text-slate-700 leading-relaxed mb-6">
+          En fisiología médica, la <strong>respiración</strong> es la secuencia integral que asegura el transporte convectivo y difusivo de gases entre el entorno ambiental y las mitocondrias de cada célula del organismo. Se estructura en tres etapas secuenciales macro/microscópicas.
+        </p>
+
+        <!-- Grilla de los 3 Procesos -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+          <!-- 1. Ventilación -->
+          <div class="bg-gradient-to-b from-sky-50 to-white p-5 rounded-xl border border-sky-200 flex flex-col justify-between hover:shadow-md transition">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-extrabold uppercase px-2.5 py-1 bg-sky-600 text-white rounded-md tracking-wider">Etapa 1</span>
+                <i class="fa-solid fa-wind text-sky-600"></i>
+              </div>
+              <h3 class="font-bold text-slate-900 text-lg mb-2">Ventilación Pulmonar</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                Movimiento macroscópico bidireccional y continuo de aire entre la atmósfera exterior y los alvéolos pulmonares. Ocurre por <strong>convección forzada</strong> gracias a gradientes oscilantes de presión:
+              </p>
+              <ul class="text-xs space-y-1.5 text-slate-700 bg-white/80 p-3 rounded-lg border border-sky-100 font-mono">
+                <li>• Inspiración: $P_{\text{alveolar}} < P_{\text{atm}}$</li>
+                <li>• Espiración: $P_{\text{alveolar}} > P_{\text{atm}}$</li>
+                <li>• Gradiente impulsor: $\Delta P$ transpulmonar</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-3 border-t border-sky-100 text-[11px] font-medium text-sky-700">
+              Mecánica muscular diafragmática y costal.
+            </div>
+          </div>
+
+          <!-- 2. Hematosis -->
+          <div class="bg-gradient-to-b from-blue-50 to-white p-5 rounded-xl border border-blue-200 flex flex-col justify-between hover:shadow-md transition">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-extrabold uppercase px-2.5 py-1 bg-blue-600 text-white rounded-md tracking-wider">Etapa 2</span>
+                <i class="fa-solid fa-arrows-rotate text-blue-600"></i>
+              </div>
+              <h3 class="font-bold text-slate-900 text-lg mb-2">Hematosis (Resp. Externa)</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                Intercambio molecular neto de $O_2$ y $CO_2$ a través de la <strong>membrana alveolocapilar</strong>. La sangre venosa eferente del ventrículo derecho se satura y arterializa:
+              </p>
+              <ul class="text-xs space-y-1.5 text-slate-700 bg-white/80 p-3 rounded-lg border border-blue-100 font-mono">
+                <li>• Difusión pasiva libre de $O_2$ hacia el capilar</li>
+                <li>• Difusión pasiva de $CO_2$ hacia el alvéolo</li>
+                <li>• Depende estrictamente de la Ley de Fick</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-3 border-t border-blue-100 text-[11px] font-medium text-blue-700">
+              Ocurre en $< 0.75\,\text{s}$ de tránsito capilar.
+            </div>
+          </div>
+
+          <!-- 3. Tisular -->
+          <div class="bg-gradient-to-b from-rose-50 to-white p-5 rounded-xl border border-rose-200 flex flex-col justify-between hover:shadow-md transition">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-extrabold uppercase px-2.5 py-1 bg-rose-600 text-white rounded-md tracking-wider">Etapa 3</span>
+                <i class="fa-solid fa-circle-dot text-rose-600"></i>
+              </div>
+              <h3 class="font-bold text-slate-900 text-lg mb-2">Respiración Interna (Tisular)</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                Intercambio gaseoso difusivo entre los capilares sistémicos periféricos y el líquido intersticial/citoplasma de los tejidos metabólicamente activos:
+              </p>
+              <ul class="text-xs space-y-1.5 text-slate-700 bg-white/80 p-3 rounded-lg border border-rose-100 font-mono">
+                <li>• Entrega tisular de $O_2$ para la fosforilación</li>
+                <li>• Captación de $CO_2$ catabólico tisular</li>
+                <li>• $PO_2$ intracelular cae hasta $< 20\text{--}40\,\text{mmHg}$</li>
+              </ul>
+            </div>
+            <div class="mt-4 pt-3 border-t border-rose-100 text-[11px] font-medium text-rose-700">
+              Modulada alostéricamente por el Efecto Bohr.
+            </div>
+          </div>
+        </div>
+
+        <!-- Banner de Distinción Crítica: Respiración Fisiológica vs. Respiración Celular -->
+        <div class="p-5 bg-amber-50 rounded-xl border border-amber-300 relative overflow-hidden mb-6">
+          <div class="flex items-start gap-3">
+            <span class="p-2 bg-amber-200 text-amber-900 rounded-lg shrink-0 mt-0.5">
+              <i class="fa-solid fa-triangle-exclamation "></i>
+            </span>
+            <div class="space-y-2">
+              <h4 class="font-bold text-amber-950 text-base flex items-center gap-2">
+                Distinción Conceptual Crítica para el Ingreso a Medicina UCCuyo
+              </h4>
+              <p class="text-xs sm:text-sm text-amber-900 leading-relaxed">
+                <strong>No confundir la respiración fisiológica</strong> (procesos biofísicos de transporte convectivo y difusión de masa) con la <strong>respiración celular aeróbica mitocondrial</strong> (vía catabólica bioquímica de oxidación de sustratos orgánicos para la transducción energética celular):
+              </p>
+              <div class="bg-white p-3 rounded-lg border border-amber-200 text-center text-sm font-mono text-slate-900 overflow-x-auto">
+                $$\text{C}_6\text{H}_{12}\text{O}_6 + 6\,\text{O}_2 \xrightarrow{\text{Glucólisis + Krebs + CTE}} 6\,\text{CO}_2 + 6\,\text{H}_2\text{O} + 36\text{--}38\,\text{ATP}$$
+              </div>
+              <p class="text-xs text-amber-800">
+                El $O_2$ transportado por el sistema cardiorrespiratorio actúa como el <strong>aceptor final de electrones</strong> en el complejo IV de la cadena transportadora de electrones mitocondrial.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Funciones No Respiratorias y Amortiguación de pH -->
+        <div class="border-t border-slate-200 pt-6">
+          <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-shield-virus text-sky-600"></i> Funciones Secundarias No Respiratorias Integradas
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Amortiguación pH -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 hover:border-sky-300 transition">
+              <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold mb-2">pH</div>
+              <h5 class="font-semibold text-slate-800 text-sm mb-1">Amortiguador de pH Rápido</h5>
+              <p class="text-xs text-slate-600 mb-2">Elimina $CO_2$ en minutos mediante hiperventilación para combatir la acidosis metabólica:</p>
+              <div class="text-[11px] font-mono bg-white p-2 rounded border border-slate-200 text-indigo-900 overflow-x-auto text-center">
+                $$\text{CO}_2 + \text{H}_2\text{O} \rightleftharpoons \text{H}_2\text{CO}_3 \rightleftharpoons \text{H}^+ + \text{HCO}_3^-$$
+              </div>
+            </div>
+
+            <!-- Acondicionamiento -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 hover:border-sky-300 transition">
+              <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-bold mb-2">
+                <i class="fa-solid fa-temperature-arrow-up "></i>
+              </div>
+              <h5 class="font-semibold text-slate-800 text-sm mb-1">Acondicionamiento Aéreo</h5>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Fosas nasales y cornetes realizan: <strong>filtración</strong> mecánica ($> 10\,\mu\text{m}$), <strong>calentamiento térmico</strong> hasta $37^\circ\text{C}$ por plexos venosos submucosos y <strong>humidificación al $100\%$</strong> de vapor de agua ($P_{\text{H}_2\text{O}} = 47\,\text{mmHg}$).
+              </p>
+            </div>
+
+            <!-- Fonación -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 hover:border-sky-300 transition">
+              <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold mb-2">
+                <i class="fa-solid fa-microphone-lines "></i>
+              </div>
+              <h5 class="font-semibold text-slate-800 text-sm mb-1">Fonación y Articulación</h5>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Vibración pasiva de las cuerdas vocales verdaderas de la laringe por el flujo espiratorio presurizado, amplificado por senos paranasales, faringe, lengua y cavidad oral.
+              </p>
+            </div>
+
+            <!-- Olfacción -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 hover:border-sky-300 transition">
+              <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold mb-2">
+                <i class="fa-solid fa-wand-magic-sparkles "></i>
+              </div>
+              <h5 class="font-semibold text-slate-800 text-sm mb-1">Quimiorrecepción Olfatoria</h5>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Neuronas bipolares ciliadas en el techo de la cavidad nasal (lámina cribosa del hueso etmoides), cuyos axones amielínicos convergen en el bulbo olfatorio (Par Craneal I).
+              </p>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 2: VÍAS AÉREAS, ANATOMÍA Y SIMULADOR DE BRONCOMOTRICIDAD           -->
+    <!-- ========================================================================= -->
+    <section id="modulo-m2" class="modulo-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="p-2.5 bg-sky-50 text-sky-600 rounded-xl">
+            <i class="fa-solid fa-code-branch "></i>
+          </span>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900">Módulo 2: Vías Aéreas y Dinámica Bronquiolar</h2>
+            <p class="text-sm text-slate-500">De la cavidad nasal a los bronquiolos terminales • Histología y Farmacología del Calibre</p>
+          </div>
+        </div>
+
+        <!-- División Anatómica vs Funcional -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50/70">
+            <div class="flex items-center gap-2 text-sky-700 font-bold mb-2 text-sm">
+              <i class="fa-solid fa-map-pin "></i> División Anatómica Convencional
+            </div>
+            <div class="space-y-3 text-xs text-slate-700">
+              <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                <strong class="text-slate-900">Vías Aéreas Superiores:</strong> Narinas, fosas nasales con cornetes (superior, medio, inferior), senos paranasales (frontales, maxilares, etmoidales, esfenoidales) y faringe dividida en nasofaringe (respiratoria pura), orofaringe y laringofaringe (vías mixtas digestivo-respiratorias).
+              </div>
+              <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                <strong class="text-slate-900">Vías Aéreas Inferiores:</strong> Laringe (órgano de transición y fonación), tráquea cervical/torácica, árbol traqueobronquial intrapulmonar y parénquima alveolar.
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50/70">
+            <div class="flex items-center gap-2 text-indigo-700 font-bold mb-2 text-sm">
+              <i class="fa-solid fa-atom "></i> División Fisiológica / Funcional
+            </div>
+            <div class="space-y-3 text-xs text-slate-700">
+              <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                <strong class="text-slate-900">Zona de Conducción (Generaciones 0 a 16):</strong> Desde la nariz hasta los bronquiolos terminales. Función exclusiva de transporte, humidificación y filtrado. Constituye el <strong>Espacio Muerto Anatómico</strong> ($V_D \approx 150\,\text{mL}$), donde <em>no existe hematosis</em>.
+              </div>
+              <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                <strong class="text-slate-900">Zona Respiratoria (Generaciones 17 a 23):</strong> Bronquiolos respiratorios, conductos y sacos alveolares. Presencia de alvéolos en su pared donde ocurre el intercambio de gases.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Laringe y Tráquea Histológica -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+          <div class="p-4 bg-sky-50/60 rounded-xl border border-sky-100">
+            <h4 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-layer-group text-sky-600"></i> Laringe y Aparato Fonador
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Armazón de <strong>9 cartílagos</strong>: 3 impares (tiroides con la nuez de Adán, cricoides anular y la epiglotis elástica que ocluye la glotis en la deglución) y 3 pares (aritenoides, corniculados, cuneiformes). Las <strong>cuerdas vocales verdaderas</strong> modulan el tono: mayor tensión elongada genera frecuencias acústicas agudas.
+            </p>
+          </div>
+
+          <div class="p-4 bg-sky-50/60 rounded-xl border border-sky-100">
+            <h4 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-circle-notch text-sky-600"></i> Tráquea y Carina
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Conducto cartilaginoso-membranoso con 16 a 20 <strong>anillos de cartílago hialino en forma de "C"</strong>, cerrados dorsalmente por el músculo traqueal liso adyacente al esófago. Se bifurca a nivel de $T_4\text{--}T_5$ en la <strong>carina traqueal</strong>, cresta ricamente inervada por el nervio vago causante del reflejo tusígeno protector.
+            </p>
+          </div>
+
+          <div class="p-4 bg-sky-50/60 rounded-xl border border-sky-100">
+            <h4 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-feather text-sky-600"></i> Escalera Mucociliar
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Epitelio respiratorio <strong>cilíndrico pseudoestratificado ciliado</strong> con células caliciformes secretoras de moco. Los cilios baten a $12\text{--}15\,\text{Hz}$ impulsando la capa mucosa retrógradamente hacia la orofaringe para su deglución o expectoración.
+            </p>
+          </div>
+        </div>
+
+        <!-- SIMULADOR INTERACTIVO: Control Autónomo del Calibre Bronquiolar -->
+        <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white rounded-2xl p-6 shadow-xl border border-slate-700">
+          <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-700 gap-3">
+            <div>
+              <span class="text-xs font-mono uppercase tracking-widest text-sky-400">Simulador Farmacofisiológico</span>
+              <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-sky-400"></i> Dinámica del Calibre Bronquiolar y Ley de Poiseuille
+              </h3>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="setBronquio('normal')" id="btn-bronq-normal" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition hover:bg-sky-500">Tono Basal Normal</button>
+              <button onclick="setBronquio('parasimpatico')" id="btn-bronq-para" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-700 hover:bg-rose-700 text-slate-200 transition">Broncoespasmo (Asma / Vago)</button>
+              <button onclick="setBronquio('adrenalina')" id="btn-bronq-adren" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-700 hover:bg-emerald-600 text-slate-200 transition">Adrenalina ($\beta_2$ Simpático)</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mt-6">
+            <!-- Canvas de la Luz Bronquiolar -->
+            <div class="lg:col-span-5 flex flex-col items-center justify-center p-4 bg-slate-950/60 rounded-xl border border-slate-700/60">
+              <div class="relative w-56 h-56 flex items-center justify-center">
+                <!-- Capa adventicia y muscular -->
+                <div id="bronq-outer" class="w-52 h-52 rounded-full border-4 border-indigo-400/40 flex items-center justify-center transition-all duration-700">
+                  <!-- Músculo liso circular -->
+                  <div id="bronq-muscle" class="w-44 h-44 rounded-full border-8 border-rose-500/70 flex items-center justify-center transition-all duration-700">
+                    <!-- Epitelio y Luz -->
+                    <div id="bronq-lumen" class="w-28 h-28 rounded-full bg-sky-400/20 border-4 border-sky-300 flex items-center justify-center shadow-inner transition-all duration-700">
+                      <span id="bronq-flow-text" class="text-xs font-mono font-bold text-sky-300 tracking-wider">Flujo: 100%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="text-[11px] text-slate-400 mt-2">Corte transversal esquemático del bronquiolo terminal</span>
+            </div>
+
+            <!-- Parámetros Hemodinámicos y Biofísica de Poiseuille -->
+            <div class="lg:col-span-7 space-y-4">
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+                  <div class="text-[11px] text-slate-400">Radio Luminal ($r$)</div>
+                  <div id="stat-radio" class="text-lg font-bold font-mono text-sky-300">1.00 r₀</div>
+                </div>
+                <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+                  <div class="text-[11px] text-slate-400">Resistencia ($R \propto 1/r^4$)</div>
+                  <div id="stat-resistencia" class="text-lg font-bold font-mono text-amber-300">1.0× Basal</div>
+                </div>
+                <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700 col-span-2 sm:col-span-1">
+                  <div class="text-[11px] text-slate-400">Trabajo Ventilatorio</div>
+                  <div id="stat-trabajo" class="text-lg font-bold font-mono text-emerald-400">Fisiológico</div>
+                </div>
+              </div>
+
+              <div id="bronq-explanation" class="p-4 rounded-xl bg-slate-800/60 border border-slate-700 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                <!-- Se actualiza con JS -->
+              </div>
+
+              <div class="text-xs font-mono bg-slate-950/70 p-3 rounded-lg border border-slate-800 text-sky-200">
+                $$\text{Ley de Poiseuille: } R = \frac{8\eta L}{\pi r^4} \implies \text{Si } r \text{ se reduce al } 50\%, R \text{ aumenta } 16 \text{ veces.}$$
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 3: PULMONES, MECÁNICA PLEURAL Y SIMULADOR DE NEUMOTÓRAX            -->
+    <!-- ========================================================================= -->
+    <section id="modulo-m3" class="modulo-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="p-2.5 bg-sky-50 text-sky-600 rounded-xl">
+            <i class="fa-solid fa-shield-halved "></i>
+          </span>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900">Módulo 3: Pulmones, Mecánica Pleural y Neumotórax</h2>
+            <p class="text-sm text-slate-500">Asimetría lobular, presiones subatmosféricas y correlación clínica con colapso elástico</p>
+          </div>
+        </div>
+
+        <!-- Asimetría Anatómica Pulmonar -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+          <div class="p-5 rounded-xl border border-sky-100 bg-sky-50/40">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-slate-900">Pulmón Derecho (Mayor Volumen: ~600 g)</h4>
+              <span class="text-xs font-bold text-sky-700 bg-sky-100 px-2.5 py-0.5 rounded-full">Trilobular</span>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+              Dividido por <strong>dos cisuras</strong>: la <em>fisura horizontal</em> y la <em>fisura oblicua</em>, delimitando <strong>tres lóbulos</strong> (superior, medio e inferior). Es más voluminoso pero más corto debido a la cúpula diafragmática derecha levantada por el lóbulo hepático subyacente.
+            </p>
+            <div class="text-[11px] font-mono text-sky-800 bg-white p-2 rounded border border-sky-200">
+              10 segmentos broncopulmonares quirúrgicamente independientes.
+            </div>
+          </div>
+
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-slate-900">Pulmón Izquierdo (Menor Volumen: ~500 g)</h4>
+              <span class="text-xs font-bold text-slate-700 bg-slate-200 px-2.5 py-0.5 rounded-full">Bilobular</span>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+              Dividido por una <strong>única cisura oblicua</strong> en <strong>dos lóbulos</strong> (superior e inferior). Presenta medialmente la profunda <em>escotadura o impronta cardíaca</em> que aloja el ventrículo izquierdo, terminando en la <em>língula</em> (homóloga al lóbulo medio derecho).
+            </p>
+            <div class="text-[11px] font-mono text-slate-700 bg-white p-2 rounded border border-slate-200">
+              8 a 10 segmentos broncopulmonares funcionales.
+            </div>
+          </div>
+        </div>
+
+        <!-- SIMULADOR DINÁMICO DE MECÁNICA PLEURAL Y NEUMOTÓRAX -->
+        <div class="bg-white rounded-2xl p-6 border-2 border-slate-200 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 gap-3">
+            <div>
+              <span class="text-xs font-bold text-sky-700 uppercase tracking-wider">Laboratorio de Biofísica de la Presión</span>
+              <h3 class="text-xl font-bold text-slate-900">Simulador de Neumotórax y Acoplamiento Pleural</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="togglePneumothorax(false)" id="btn-pleura-sana" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-sky-600 text-white shadow-sm transition">
+                Cavidad Pleural Intacta (-5 mmHg)
+              </button>
+              <button onclick="togglePneumothorax(true)" id="btn-pleura-neumo" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 hover:bg-rose-600 hover:text-white text-slate-700 transition">
+                Neumotórax Abierto (0 mmHg)
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6 items-center">
+            <!-- Representación Visual del Tórax y Pulmón -->
+            <div class="lg:col-span-6 bg-slate-900 p-6 rounded-2xl flex flex-col items-center justify-center text-white relative min-h-[300px] overflow-hidden">
+              <div class="absolute top-3 left-3 text-[11px] font-mono text-slate-400">
+                Pared Torácica (Pleura Parietal)
+              </div>
+              <div id="neumo-indicator" class="absolute top-3 right-3 text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                Vacío Fisiológico Estable
+              </div>
+
+              <!-- Caja Torácica -->
+              <div class="w-64 h-56 border-4 border-dashed border-slate-500 rounded-3xl p-3 flex items-center justify-center relative bg-slate-800/40">
+                <!-- Flechas de vector de retroceso de la caja torácica (tiende a expandirse) -->
+                <div class="absolute -top-3 text-[10px] text-amber-300 flex items-center gap-1 font-mono">
+                  <i class="fa-solid fa-arrow-up "></i> Expansión Torácica Elástica
+                </div>
+
+                <!-- Cavidad Pleural y Pulmón -->
+                <div id="pulmon-visual" class="w-52 h-44 bg-gradient-to-tr from-sky-600 to-sky-400 rounded-2xl flex flex-col items-center justify-center text-center p-3 shadow-2xl transition-all duration-700 relative">
+                  <i class="fa-solid fa-heart-pulse text-white/80 mb-1"></i>
+                  <span id="pulmon-label" class="text-xs font-bold text-white">Pulmón Expandido</span>
+                  <span id="vol-pulmon-txt" class="text-[11px] font-mono text-sky-100">Capacidad Residual Funcional</span>
+
+                  <!-- Flechas de retracción alveolar hacia adentro -->
+                  <div class="absolute bottom-1 text-[9px] text-sky-100 opacity-80">
+                    Retracción Elástica Alveolar
+                  </div>
+                </div>
+
+                <!-- Orificio de Neumotórax -->
+                <div id="agujero-neumo" class="hidden absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-8 bg-rose-500 rounded-full animate-ping"></div>
+              </div>
+            </div>
+
+            <!-- Panel de Presiones Transmurales -->
+            <div class="lg:col-span-6 space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                  <span class="text-xs text-slate-500">Presión Atmosférica ($P_{\text{atm}}$)</span>
+                  <div class="text-xl font-bold font-mono text-slate-900">760 mmHg <span class="text-xs font-normal text-slate-500">(0 ref)</span></div>
+                </div>
+
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                  <span class="text-xs text-slate-500">Presión Intrapleural ($P_{\text{ip}}$)</span>
+                  <div id="val-pip" class="text-xl font-bold font-mono text-sky-600">-5 mmHg <span class="text-xs font-normal text-slate-500">(755)</span></div>
+                </div>
+
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                  <span class="text-xs text-slate-500">Presión Alveolar ($P_{\text{alv}}$)</span>
+                  <div class="text-xl font-bold font-mono text-slate-900">0 mmHg <span class="text-xs font-normal text-slate-500">(760)</span></div>
+                </div>
+
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                  <span class="text-xs text-slate-500">Presión Transpulmonar ($P_{\text{tp}}$)</span>
+                  <div id="val-ptp" class="text-xl font-bold font-mono text-emerald-600">+5 mmHg <span class="text-xs font-normal text-slate-500">($P_{\text{alv}} - P_{\text{ip}}$)</span></div>
+                </div>
+              </div>
+
+              <!-- Cuadro Diagnóstico / Fisiopatológico -->
+              <div id="neumo-desc" class="p-4 rounded-xl bg-sky-50 border border-sky-200 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong>Fisiología Normal:</strong> La tendencia elástica natural del pulmón hacia adentro (colapso) es contrarrestada por la tendencia de la jaula torácica a expandirse hacia afuera. Esto genera un vacío o <strong>presión subatmosférica intrapleural ($-5\,\text{mmHg}$)</strong>. La presión transpulmonar positiva ($+5\,\text{mmHg}$) mantiene los alvéolos inflados.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 4: HISTOLOGÍA ALVEOLAR Y MEMBRANA RESPIRATORIA (LEY DE FICK)       -->
+    <!-- ========================================================================= -->
+    <section id="modulo-m4" class="modulo-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="p-2.5 bg-sky-50 text-sky-600 rounded-xl">
+            <i class="fa-solid fa-microscope "></i>
+          </span>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900">Módulo 4: Células Alveolares y Membrana Alveolocapilar</h2>
+            <p class="text-sm text-slate-500">Ultraestructura histológica de la barrera de difusión y Ley de Fick</p>
+          </div>
+        </div>
+
+        <!-- Tríada Celular Alveolar -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+          <!-- Neumocito I -->
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50/80 hover:bg-white hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-bold mb-3">N-I</div>
+            <h4 class="font-bold text-slate-900 text-base mb-1">Neumocito Tipo I (95% Área)</h4>
+            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+              Célula epitelial escamosa extremadamente plana ($\approx 0.1\text{--}0.2\,\mu\text{m}$ de espesor citoplasmático). Ocupa casi la totalidad de la superficie alveolar, minimizando la distancia física para la difusión ultrarrápida de gases. No tiene capacidad mitótica.
+            </p>
+            <span class="text-[11px] font-semibold text-sky-700 uppercase tracking-wide">Pared de Difusión Primaria</span>
+          </div>
+
+          <!-- Neumocito II -->
+          <div class="p-5 rounded-xl border border-indigo-200 bg-indigo-50/40 hover:bg-white hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold mb-3">N-II</div>
+            <h4 class="font-bold text-slate-900 text-base mb-1">Neumocito Tipo II (Secretor)</h4>
+            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+              Célula cúbica con cuerpos lamelares que sintetiza y secreta <strong>surfactante pulmonar</strong> (dipalmitoilfosfatidilcolina + apoproteínas SP-A, B, C, D). Disminuye la tensión superficial alveolar ($T$), evitando el colapso (atelectasia) al final de la espiración y actúa como célula madre regenerativa alveolar.
+            </p>
+            <span class="text-[11px] font-semibold text-indigo-700 uppercase tracking-wide">Ley de Laplace: $P = 2T / r$</span>
+          </div>
+
+          <!-- Macrófago Alveolar -->
+          <div class="p-5 rounded-xl border border-amber-200 bg-amber-50/40 hover:bg-white hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold mb-3">MΦ</div>
+            <h4 class="font-bold text-slate-900 text-base mb-1">Macrófago Alveolar ("Células del Polvo")</h4>
+            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+              Fagocitos móviles derivados de monocitos que patrullan la superficie de la luz alveolar desprovista de cilios. Fagocitan partículas de polvo inhaladas, hollín, bacterias y eritrocitos extravasados, migrando luego hacia la escalera mucociliar terminal.
+            </p>
+            <span class="text-[11px] font-semibold text-amber-700 uppercase tracking-wide">Línea de Defensa Estéril</span>
+          </div>
+        </div>
+
+        <!-- ULTRAESTRUCTURA DE LA MEMBRANA RESPIRATORIA INTERACTIVA -->
+        <div class="border border-slate-200 rounded-2xl p-6 bg-slate-50/50">
+          <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-layer-group text-sky-600"></i> Las 6 Capas Ultraestructurales de la Membrana Alveolocapilar
+          </h3>
+          <p class="text-xs text-slate-500 mb-6">
+            Espesor medio total: $\approx 0.5\,\mu\text{m}$. Haz clic en cada estrato para visualizar su relevancia anatómica y biofísica.
+          </p>
+
+          <!-- Componente Visual de Capas -->
+          <div class="grid grid-cols-1 md:grid-cols-6 gap-2 text-center text-xs font-semibold mb-6">
+            <button onclick="selectLayer(1)" id="layer-btn-1" class="layer-pill p-3 rounded-xl border-2 border-sky-400 bg-sky-100 text-sky-900 transition shadow-sm">
+              1. Surfactante Líquido
+            </button>
+            <button onclick="selectLayer(2)" id="layer-btn-2" class="layer-pill p-3 rounded-xl border border-slate-300 bg-white text-slate-700 hover:border-sky-400 transition">
+              2. Epitelio Alveolar (N-I)
+            </button>
+            <button onclick="selectLayer(3)" id="layer-btn-3" class="layer-pill p-3 rounded-xl border border-slate-300 bg-white text-slate-700 hover:border-sky-400 transition">
+              3. M. Basal Epitelial
+            </button>
+            <button onclick="selectLayer(4)" id="layer-btn-4" class="layer-pill p-3 rounded-xl border border-slate-300 bg-white text-slate-700 hover:border-sky-400 transition">
+              4. M. Basal Capilar
+            </button>
+            <button onclick="selectLayer(5)" id="layer-btn-5" class="layer-pill p-3 rounded-xl border border-slate-300 bg-white text-slate-700 hover:border-sky-400 transition">
+              5. Endotelio Capilar
+            </button>
+            <button onclick="selectLayer(6)" id="layer-btn-6" class="layer-pill p-3 rounded-xl border border-slate-300 bg-white text-slate-700 hover:border-sky-400 transition">
+              6. Plasma del Capilar
+            </button>
+          </div>
+
+          <div id="layer-detail" class="p-4 rounded-xl bg-white border border-slate-200 text-slate-800 text-sm shadow-sm flex items-start gap-3">
+            <span class="p-2 bg-sky-100 text-sky-700 rounded-lg shrink-0 mt-0.5">
+              <i class="fa-solid fa-circle-info "></i>
+            </span>
+            <div>
+              <strong id="layer-title" class="text-base text-slate-900 block mb-1">Capa 1: Película de Líquido y Surfactante Pulmonar</strong>
+              <p id="layer-desc" class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Monocapa lipoproteica en contacto directo con el aire alveolar. Reduce radicalmente la tensión interfacial del agua, asegurando la estabilidad mecánica de alvéolos pequeños frente a los grandes.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIMULADOR BIOFÍSICO: LEY DE FICK DE LA DIFUSIÓN -->
+        <div class="mt-8 bg-slate-900 text-white rounded-2xl p-6 shadow-lg border border-slate-800">
+          <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+            <div>
+              <span class="text-xs font-mono uppercase text-sky-400">Biofísica de Membrana</span>
+              <h3 class="text-lg font-bold text-white">Calculadora Dinámica de la Ley de Fick</h3>
+            </div>
+            <div class="text-xs font-mono text-slate-400 hidden sm:block">
+              $$V_{\text{gas}} = \frac{A \cdot D \cdot \Delta P}{T}$$
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+            <!-- Sliders -->
+            <div class="space-y-4 md:col-span-2">
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1">
+                  <span>Área de Superficie ($A$): <strong id="lbl-fick-a" class="text-sky-300">70 m²</strong></span>
+                  <span class="text-slate-400">(Normal fisiológico)</span>
+                </div>
+                <input type="range" id="slider-fick-a" min="10" max="100" value="70" class="w-full accent-sky-500 cursor-pointer" oninput="calcularFick()">
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1">
+                  <span>Espesor de Membrana ($T$): <strong id="lbl-fick-t" class="text-sky-300">0.5 µm</strong></span>
+                  <span class="text-slate-400">(Edema/Fibrosis aumenta $T$)</span>
+                </div>
+                <input type="range" id="slider-fick-t" min="0.3" max="3.0" step="0.1" value="0.5" class="w-full accent-sky-500 cursor-pointer" oninput="calcularFick()">
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1">
+                  <span>Gradiente de Presión Parcial ($\Delta P$): <strong id="lbl-fick-p" class="text-sky-300">64 mmHg</strong></span>
+                  <span class="text-slate-400">(Alveolo-Capilar de $O_2$)</span>
+                </div>
+                <input type="range" id="slider-fick-p" min="10" max="100" value="64" class="w-full accent-sky-500 cursor-pointer" oninput="calcularFick()">
+              </div>
+            </div>
+
+            <!-- Tasa de Difusión Resultante -->
+            <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 flex flex-col justify-between text-center">
+              <div>
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tasa Relativa de Difusión</span>
+                <div id="fick-result" class="text-3xl sm:text-4xl font-extrabold font-mono text-emerald-400 my-2">100%</div>
+                <span id="fick-status" class="text-xs text-emerald-300 font-medium">Capacidad de Hematosis Óptima</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-3 pt-3 border-t border-slate-700">
+                El edema pulmonar aumenta el espesor ($T$), disminuyendo críticamente la difusión; el enfisema destruye tabiques alveolares reduciendo el área ($A$).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 5: BIOFÍSICA DEL INTERCAMBIO GASEOSO (DALTON Y HENRY)              -->
+    <!-- ========================================================================= -->
+    <section id="modulo-m5" class="modulo-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="p-2.5 bg-sky-50 text-sky-600 rounded-xl">
+            <i class="fa-solid fa-scale-balanced "></i>
+          </span>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900">Módulo 5: Biofísica del Intercambio Gaseoso y Presiones Parciales</h2>
+            <p class="text-sm text-slate-500">Leyes de Dalton y Henry • Gradientes de $P\text{O}_2$ y $P\text{CO}_2$ Alveolares y Tisulares</p>
+          </div>
+        </div>
+
+        <!-- Leyes Biofísicas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50">
+            <h4 class="font-bold text-slate-900 text-base mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-check text-sky-600"></i> Ley de Dalton de las Presiones Parciales
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+              En una mezcla de gases, la presión total ejercida equivale a la suma de las presiones individuales que cada gas ejercería si ocupara solo el volumen total:
+            </p>
+            <div class="text-xs font-mono bg-white p-2.5 rounded border border-slate-200 text-slate-800 space-y-1">
+              <div>$$P_{\text{total}} = \sum P_i = P_{\text{N}_2} + P_{\text{O}_2} + P_{\text{CO}_2} + P_{\text{H}_2\text{O}}$$</div>
+              <div>$$P_x = P_{\text{total}} \times F_x \implies P\text{O}_2 = 760\,\text{mmHg} \times 0.2093 \approx 159\,\text{mmHg}$$</div>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50">
+            <h4 class="font-bold text-slate-900 text-base mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-droplets text-sky-600"></i> Ley de Henry y Coeficiente de Solubilidad
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+              La concentración de un gas disuelto en un líquido es directamente proporcional a su presión parcial y a su coeficiente de solubilidad ($S$):
+            </p>
+            <div class="text-xs font-mono bg-white p-2.5 rounded border border-slate-200 text-slate-800">
+              $$[C_{\text{gas}}] = S \cdot P_{\text{gas}}$$
+              <div class="mt-1 text-[11px] text-rose-700 font-sans font-bold">
+                ¡Clave Médica!: El $CO_2$ es $\approx 24$ veces más soluble en plasma/lípidos que el $O_2$. Por ello, con un gradiente de apenas $5\,\text{mmHg}$, difunde a la misma velocidad que el $O_2$ con un gradiente de $64\,\text{mmHg}$.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLERO HEMODINÁMICO DE PRESIONES PARCIALES -->
+        <div class="bg-gradient-to-b from-slate-900 to-slate-950 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-800">
+          <div class="text-center max-w-2xl mx-auto mb-8">
+            <span class="text-xs font-mono uppercase tracking-widest text-sky-400">Mapa Hemodinámico en Tiempo Real</span>
+            <h3 class="text-xl sm:text-2xl font-bold mt-1">Gradientes Transalveolares y Periféricos de Gas</h3>
+            <p class="text-xs text-slate-400 mt-1">
+              Todos los valores en milímetros de mercurio ($\text{mmHg}$) registrados a nivel del mar en reposo fisiológico.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-stretch">
+            <!-- 1. Alvéolo -->
+            <div class="bg-slate-800/90 rounded-xl p-4 border border-sky-500/50 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-xs text-sky-400 font-mono mb-2">
+                  <span>Alvéolo Pulmonar</span>
+                  <i class="fa-solid fa-circle-dot text-sky-400"></i>
+                </div>
+                <div class="space-y-2 font-mono">
+                  <div class="p-2 bg-slate-900/80 rounded border border-slate-700 flex justify-between">
+                    <span class="text-sky-300">$P\text{O}_2$:</span>
+                    <strong class="text-white text-base">104 mmHg</strong>
+                  </div>
+                  <div class="p-2 bg-slate-900/80 rounded border border-slate-700 flex justify-between">
+                    <span class="text-rose-300">$P\text{CO}_2$:</span>
+                    <strong class="text-white text-base">40 mmHg</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4 text-[11px] text-slate-400">
+                Punto de equilibrio para la hematosis.
+              </div>
+            </div>
+
+            <!-- 2. Sangre Venosa Aferente -->
+            <div class="bg-slate-800/90 rounded-xl p-4 border border-rose-500/40 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-xs text-rose-400 font-mono mb-2">
+                  <span>Sangre Venosa (A. Pulm.)</span>
+                  <i class="fa-solid fa-circle-right text-rose-400"></i>
+                </div>
+                <div class="space-y-2 font-mono">
+                  <div class="p-2 bg-slate-900/80 rounded border border-slate-700 flex justify-between">
+                    <span class="text-sky-300">$P\text{O}_2$:</span>
+                    <strong class="text-white text-base">40 mmHg</strong>
+                  </div>
+                  <div class="p-2 bg-slate-900/80 rounded border border-slate-700 flex justify-between">
+                    <span class="text-rose-300">$P\text{CO}_2$:</span>
+                    <strong class="text-white text-base">45 mmHg</strong>
+                  </div>
+                </div>
+              </div>
+              <!-- Gradiente Hematosis -->
+              <div class="mt-3 bg-rose-950/40 p-2 rounded border border-rose-800/40 text-[10px] text-rose-200 font-mono">
+                $\Delta P\text{O}_2 = 104 - 40 = 64\,\text{mmHg}$ (Entra)<br>
+                $\Delta P\text{CO}_2 = 45 - 40 = 5\,\text{mmHg}$ (Sale)
+              </div>
+            </div>
+
+            <!-- 3. Sangre Arterial Eferente -->
+            <div class="bg-slate-800/90 rounded-xl p-4 border border-sky-400/40 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-xs text-sky-400 font-mono mb-2">
+                  <span>Sangre Arterial (V. Pulm.)</span>
+                  <i class="fa-solid fa-heart text-sky-400"></i>
+                </div>
+                <div class="space-y-2 font-mono">
+                  <div class="p-2 bg-slate-900/80 rounded border border-slate-700 flex justify-between">
+                    <span class="text-sky-300">$P\text{O}_2$:</span>
+                    <strong class="text-white text-base">~100 mmHg</strong>
+                  </div>
+                  <div class="p-2 bg-slate-900/80 rounded border border-slate-700 flex justify-between">
+                    <span class="text-rose-300">$P\text{CO}_2$:</span>
+                    <strong class="text-white text-base">40 mmHg</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4 text-[11px] text-slate-400">
+                Ligero shunt fisiológico baja $P\text{O}_2$ de 104 a 100.
+              </div>
+            </div>
+
+            <!-- 4. Célula Tisular Periférica -->
+            <div class="bg-slate-800/90 rounded-xl p-4 border border-amber-500/40 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-xs text-amber-400 font-mono mb-2">
+                  <span>Célula Tisular (Metabólica)</span>
+                  <i class="fa-solid fa-atom text-amber-400"></i>
+                </div>
+                <div class="space-y-2 font-mono">
+                  <div class="p-2 bg-slate-900/80 rounded border border-slate-700 flex justify-between">
+                    <span class="text-sky-300">$P\text{O}_2$:</span>
+                    <strong class="text-white text-base">&lt; 40 mmHg</strong>
+                  </div>
+                  <div class="p-2 bg-slate-900/80 rounded border border-slate-700 flex justify-between">
+                    <span class="text-rose-300">$P\text{CO}_2$:</span>
+                    <strong class="text-white text-base">&gt; 45 mmHg</strong>
+                  </div>
+                </div>
+              </div>
+              <!-- Gradiente Tisular -->
+              <div class="mt-3 bg-amber-950/40 p-2 rounded border border-amber-800/40 text-[10px] text-amber-200 font-mono">
+                Difusión neta: $O_2$ penetra a mitocondrias; $CO_2$ pasa al capilar.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 6: TRANSPORTE DE GASES Y CURVA DE HEMOGLOBINA (EFECTO BOHR)        -->
+    <!-- ========================================================================= -->
+    <section id="modulo-m6" class="modulo-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="p-2.5 bg-sky-50 text-sky-600 rounded-xl">
+            <i class="fa-solid fa-droplet "></i>
+          </span>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900">Módulo 6: Transporte Sanguíneo de Gases y Hemoglobina</h2>
+            <p class="text-sm text-slate-500">Estructura tetramérica de la Hb, Oxihemoglobina y Modulación Alostérica (Efecto Bohr)</p>
+          </div>
+        </div>
+
+        <!-- Fracciones de Transporte y Estructura Cuaternaria -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50">
+            <h4 class="font-bold text-slate-900 text-sm mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-chart-pie text-sky-600"></i> Formas de Transporte de Oxígeno y Dióxido de Carbono
+            </h4>
+            <div class="space-y-3 text-xs">
+              <div class="p-3 bg-white rounded-lg border border-slate-200">
+                <div class="font-bold text-sky-800 mb-1">Oxígeno ($O_2$):</div>
+                <ul class="list-disc list-inside text-slate-700 space-y-1">
+                  <li><strong>Disuelto físicamente en plasma (1.5%):</strong> Determina la $P\text{O}_2$ arterial ($0.003\,\text{mL } O_2 / 100\,\text{mL blood} / \text{mmHg}$).</li>
+                  <li><strong>Unido a la Hemoglobina (98.5%):</strong> Forma oxihemoglobina ($\text{HbO}_2$). $1\,\text{g}$ de $\text{Hb}$ transporta hasta $1.34\,\text{mL}$ de $O_2$.</li>
+                </ul>
+              </div>
+
+              <div class="p-3 bg-white rounded-lg border border-slate-200">
+                <div class="font-bold text-rose-800 mb-1">Dióxido de Carbono ($CO_2$):</div>
+                <ul class="list-disc list-inside text-slate-700 space-y-1">
+                  <li><strong>En forma de ion Bicarbonato ($\text{HCO}_3^-$, 70%):</strong> Vía anhidrasa carbónica eritrocitaria y transportador de intercambio de cloruro ($\text{Cl}^-$ / Hamburger).</li>
+                  <li><strong>Compuestos Carbaminohemoglobina (23%):</strong> Unido a grupos amino terminales de la globina.</li>
+                  <li><strong>Disuelto físicamente en plasma (7%):</strong> Por su alta solubilidad relativa.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50">
+            <h4 class="font-bold text-slate-900 text-sm mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-dna text-sky-600"></i> Estructura y Estequiometría de la Hemoglobina
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+              Tetrámero proteico globular ($\alpha_2\beta_2$) compuesto por 4 subunidades de globina, cada una portadora de un grupo prostético <strong>Hemo</strong> con un átomo central de <strong>hierro en estado ferroso ($\text{Fe}^{2+}$)</strong>. El hierro férrico ($\text{Fe}^{3+}$, metahemoglobina) no es apto para fijar oxígeno.
+            </p>
+            <div class="text-xs font-mono bg-white p-3 rounded-lg border border-slate-200 text-center text-slate-900 mb-3">
+              $$\text{Hb} + 4\,\text{O}_2 \rightleftharpoons \text{Hb}(\text{O}_2)_4$$
+            </div>
+            <p class="text-xs text-slate-600">
+              <strong>Cooperatividad Positiva:</strong> La unión de la primera molécula de $O_2$ transiciona a la $\text{Hb}$ del estado tenso ($\text{T}$) al estado relajado ($\text{R}$), facilitando la unión secuencial de las tres siguientes. Esta propiedad origina su característica <strong>curva sigmoidea</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- SIMULADOR DINÁMICO: Curva de Disociación de la Hemoglobina y Efecto Bohr -->
+        <div class="bg-white rounded-2xl border-2 border-slate-200 p-6 shadow-sm">
+          <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-200 gap-3">
+            <div>
+              <span class="text-xs font-bold text-sky-700 uppercase tracking-wider">Simulador de Biofísica Sanguínea</span>
+              <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-chart-line text-sky-600"></i> Curva Sigmoidea de la $\text{Hb}$ y Desplazamiento Alostérico (Efecto Bohr)
+              </h3>
+            </div>
+            <button onclick="resetearBohr()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1 self-start">
+              <i class="fa-solid fa-rotate-left "></i> Restablecer Valores Fisiológicos
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+            <!-- Gráfico con Chart.js -->
+            <div class="lg:col-span-8 bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <div class="h-72 sm:h-80 w-full">
+                <canvas id="hbCurveChart"></canvas>
+              </div>
+              <div class="flex flex-wrap items-center justify-between text-xs text-slate-500 mt-2 px-2 font-mono">
+                <span>$P_{50}$ Estándar: $\approx 26.6\,\text{mmHg}$ (50% Sat)</span>
+                <span>Meseta Pulmonar ($PO_2 \approx 100\,\text{mmHg}$): $\approx 98\%$ Sat</span>
+              </div>
+            </div>
+
+            <!-- Controles de Modulación Alostérica -->
+            <div class="lg:col-span-4 space-y-4">
+              <!-- Slider pH -->
+              <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                <div class="flex justify-between items-center text-xs mb-1.5">
+                  <span class="font-bold text-slate-700">pH Sanguíneo:</span>
+                  <span id="lbl-ph" class="font-mono font-bold text-indigo-700">7.40</span>
+                </div>
+                <input type="range" id="slider-ph" min="7.10" max="7.70" step="0.05" value="7.40" class="w-full accent-indigo-600 cursor-pointer" oninput="actualizarCurvaHb()">
+                <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                  <span>Acidosis (7.10)</span>
+                  <span>Normal (7.40)</span>
+                  <span>Alcalosis (7.70)</span>
+                </div>
+              </div>
+
+              <!-- Slider Temperatura -->
+              <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                <div class="flex justify-between items-center text-xs mb-1.5">
+                  <span class="font-bold text-slate-700">Temperatura Tisular:</span>
+                  <span id="lbl-temp" class="font-mono font-bold text-rose-600">37.0 °C</span>
+                </div>
+                <input type="range" id="slider-temp" min="34" max="42" step="0.5" value="37.0" class="w-full accent-rose-500 cursor-pointer" oninput="actualizarCurvaHb()">
+                <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                  <span>Hipotermia (34°C)</span>
+                  <span>Normal (37°C)</span>
+                  <span>Fiebre / Ejercicio (42°C)</span>
+                </div>
+              </div>
+
+              <!-- Slider PCO2 -->
+              <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                <div class="flex justify-between items-center text-xs mb-1.5">
+                  <span class="font-bold text-slate-700">$P\text{CO}_2$ Local:</span>
+                  <span id="lbl-pco2" class="font-mono font-bold text-sky-700">40 mmHg</span>
+                </div>
+                <input type="range" id="slider-pco2" min="20" max="70" step="2" value="40" class="w-full accent-sky-600 cursor-pointer" oninput="actualizarCurvaHb()">
+                <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                  <span>Hipocapnia (20)</span>
+                  <span>Normal (40)</span>
+                  <span>Hipercapnia (70)</span>
+                </div>
+              </div>
+
+              <!-- Estado Dinámico del Efecto Bohr -->
+              <div id="bohr-badge" class="p-3 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-700">
+                <strong id="bohr-dir" class="block text-slate-900 font-bold mb-1">Curva en Posición Normal</strong>
+                <p id="bohr-desc" class="text-slate-600 text-[11px] leading-relaxed">
+                  Afinidad fisiológica estándar. $P_{50} = 26.6\,\text{mmHg}$. En tejidos periféricos durante el ejercicio (ácido láctico, hipercapnia y calor), la curva se desvía a la derecha, cediendo más $O_2$.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </div>
+  </main>
+
+  <!-- Pie de Página Institucional -->
+  <footer class="bg-white border-t border-gray-200 py-3 text-center text-xs text-gray-500 font-medium">
+    Desarrollado por vesalio - Todos los derechos reservados
+  </footer>
+
+  <!-- Modal: Vademécum Teórico Biofísico Respiratorio -->
+  <div id="modal-formulas" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white max-w-3xl w-full rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="bg-accent p-4 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-book-bookmark text-xl"></i>
+          <h3 class="font-bold text-base">Vademécum Teórico: Biofísica y Fisiología Respiratoria</h3>
+        </div>
+        <button onclick="closeFormulasModal()" class="text-white hover:text-gray-200 transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      
+      <div class="p-6 overflow-y-auto space-y-6 text-xs md:text-sm text-gray-700 custom-scroll leading-relaxed">
+        
+        <!-- 1. Leyes Biofísicas de Gases y Difusión -->
+        <div>
+          <h4 class="font-bold text-accent text-sm mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-scale-balanced"></i> 1. Leyes Biofísicas Fundamentales
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div class="p-3 bg-gray-50 rounded-xl border border-gray-200">
+              <strong class="text-slate-800">Ley de Dalton:</strong><br>
+              $$P_{\text{total}} = \sum P_i = P_{\text{N}_2} + P_{\text{O}_2} + P_{\text{CO}_2} + P_{\text{H}_2\text{O}}$$
+              <span class="text-gray-500 font-sans text-[11px]">La presión total equivale a la suma de presiones parciales.</span>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-xl border border-gray-200">
+              <strong class="text-slate-800">Ley de Henry:</strong><br>
+              $$[C_{\text{gas}}] = S \cdot P_{\text{gas}}$$
+              <span class="text-gray-500 font-sans text-[11px]">El $\text{CO}_2$ es $\approx 24$ veces más soluble que el $\text{O}_2$.</span>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-xl border border-gray-200">
+              <strong class="text-slate-800">Ley de Fick:</strong><br>
+              $$V_{\text{gas}} = \frac{A \cdot D \cdot \Delta P}{T}$$
+              <span class="text-gray-500 font-sans text-[11px]">Difusión pasiva directamente proporcional a superficie y gradiente, e inversamente al espesor.</span>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-xl border border-gray-200">
+              <strong class="text-slate-800">Ley de Poiseuille:</strong><br>
+              $$R = \frac{8\eta L}{\pi r^4}$$
+              <span class="text-gray-500 font-sans text-[11px]">Resistencia inversamente proporcional a la cuarta potencia del radio.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Presiones Parciales Fisiológicas -->
+        <div>
+          <h4 class="font-bold text-accent text-sm mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-chart-pie"></i> 2. Tabla de Presiones Parciales Fisiológicas (Nivel del Mar)
+          </h4>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse border border-gray-200 text-xs">
+              <thead>
+                <tr class="bg-gray-100 text-slate-800 font-bold">
+                  <th class="p-2 border border-gray-200">Compartimento</th>
+                  <th class="p-2 border border-gray-200">$P\text{O}_2\,(\text{mmHg})$</th>
+                  <th class="p-2 border border-gray-200">$P\text{CO}_2\,(\text{mmHg})$</th>
+                  <th class="p-2 border border-gray-200">Estado Hemodinámico</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="p-2 border border-gray-200 font-semibold">Aire Alveolar</td>
+                  <td class="p-2 border border-gray-200 font-mono text-sky-700 font-bold">$104$</td>
+                  <td class="p-2 border border-gray-200 font-mono text-rose-700 font-bold">$40$</td>
+                  <td class="p-2 border border-gray-200 text-slate-600">Post-ventilatorio con vapor saturado ($47\,\text{mmHg}$)</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="p-2 border border-gray-200 font-semibold">Sangre Venosa (Arteria Pulmonar)</td>
+                  <td class="p-2 border border-gray-200 font-mono text-sky-700 font-bold">$40$</td>
+                  <td class="p-2 border border-gray-200 font-mono text-rose-700 font-bold">$45$</td>
+                  <td class="p-2 border border-gray-200 text-slate-600">Desoxigenada (aferente ventrículo derecho)</td>
+                </tr>
+                <tr>
+                  <td class="p-2 border border-gray-200 font-semibold">Sangre Arterial (Venas Pulmonares)</td>
+                  <td class="p-2 border border-gray-200 font-mono text-sky-700 font-bold">$\approx 100$</td>
+                  <td class="p-2 border border-gray-200 font-mono text-rose-700 font-bold">$40$</td>
+                  <td class="p-2 border border-gray-200 text-slate-600">Arterializada (ligero shunt bronquial/Tebesio)</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="p-2 border border-gray-200 font-semibold">Célula Tisular Activa</td>
+                  <td class="p-2 border border-gray-200 font-mono text-sky-700 font-bold">$&lt; 40$</td>
+                  <td class="p-2 border border-gray-200 font-mono text-rose-700 font-bold">$&gt; 45$</td>
+                  <td class="p-2 border border-gray-200 text-slate-600">Consumo mitocondrial continuo de $\text{O}_2$</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3. Equilibrio Ácido-Base Carbónico y Efecto Bohr -->
+        <div>
+          <h4 class="font-bold text-accent text-sm mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flask"></i> 3. Sistema Amortiguador y Efecto Bohr
+          </h4>
+          <div class="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2 text-xs">
+            <p><strong>Ecuación del Amortiguador Bicarbonato:</strong></p>
+            <div class="text-center font-mono">
+              $$\text{CO}_2 + \text{H}_2\text{O} \xrightleftharpoons{\text{Anhidrasa Carbónica}} \text{H}_2\text{CO}_3 \rightleftharpoons \text{H}^+ + \text{HCO}_3^-$$
+            </div>
+            <p class="text-[11px] text-gray-600 leading-relaxed">
+              <strong>Efecto Bohr:</strong> Un incremento de $[\text{H}^+]$ (acidosis), $P\text{CO}_2$ (hipercapnia) y temperatura reduce la afinidad de la hemoglobina por el oxígeno, desviando la curva sigmoidea a la derecha (aumento de $P_{50}$) y liberando $\text{O}_2$ a los tejidos metabólicamente activos.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-end">
+        <button onclick="closeFormulasModal()" class="px-5 py-2 bg-accent text-white font-semibold rounded-lg hover:bg-accent-hover text-xs transition shadow-sm">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Guía de Uso del Simulador -->
+  <div id="modal-tutorial" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white max-w-3xl w-full rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="bg-accent p-4 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-xl"></i>
+          <h3 class="font-bold text-base">Guía de Uso del Simulador: Sistema Respiratorio</h3>
+        </div>
+        <button onclick="closeTutorial()" class="text-white hover:text-gray-200 transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      
+      <div class="p-6 overflow-y-auto space-y-6 text-xs md:text-sm text-gray-700 custom-scroll leading-relaxed">
+        
+        <div>
+          <h4 class="font-bold text-accent text-sm mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-compass"></i> 1. Navegación por la Barra Lateral
+          </h4>
+          <p class="text-gray-600">
+            Utiliza la barra lateral izquierda para alternar entre los 6 módulos conceptuales y de simulación biofísica. Cada módulo mantiene de forma persistente su estado interactivo.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-accent text-sm mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-sliders"></i> 2. Simuladores Biofísicos Activos
+          </h4>
+          <div class="space-y-2 text-xs">
+            <div class="p-3 bg-gray-50 rounded-xl border border-gray-200">
+              <strong class="text-slate-800">Calibre Bronquiolar (Módulo 2):</strong> Alterna entre tono basal, broncoespasmo colinérgico/asmático y estimulación $\beta_2$ simpática con adrenalina para verificar la Ley de Poiseuille ($R \propto 1/r^4$).
+            </div>
+            <div class="p-3 bg-gray-50 rounded-xl border border-gray-200">
+              <strong class="text-slate-800">Mecánica Pleural y Neumotórax (Módulo 3):</strong> Simula el neumotórax traumático abierto ($P_{\text{ip}} = 0\,\text{mmHg}$) y observa el colapso pulmonar elástico inmediato frente a la expansión de la jaula torácica.
+            </div>
+            <div class="p-3 bg-gray-50 rounded-xl border border-gray-200">
+              <strong class="text-slate-800">Calculadora de Fick (Módulo 4):</strong> Ajusta área alveolar ($A$), espesor de membrana ($T$) y gradiente ($\Delta P$) para observar el impacto patológico del enfisema y edema pulmonar.
+            </div>
+            <div class="p-3 bg-gray-50 rounded-xl border border-gray-200">
+              <strong class="text-slate-800">Curva de Hemoglobina y Efecto Bohr (Módulo 6):</strong> Modifica los sliders de $\text{pH}$, temperatura y $P\text{CO}_2$ en tiempo real para visualizar el desplazamiento alostérico de la curva de Hill y el cambio de la $P_{50}$.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bg-gray-50 p-4 border-t border-gray-200 flex justify-end">
+        <button onclick="closeTutorial()" class="px-5 py-2 bg-accent text-white font-semibold rounded-lg hover:bg-accent-hover text-xs transition shadow-sm">
+          ¡Entendido, Comenzar a Estudiar!
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- LÓGICA JAVASCRIPT Y SIMULADORES -->
+  <script>
+    // Tab Switching Controller (Sidebar UCCuyo)
+    function cambiarModulo(tabId) {
+      document.querySelectorAll('.modulo-content').forEach(view => {
+        view.classList.add('hidden');
+      });
+
+      const target = document.getElementById('modulo-' + tabId);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+
+      document.querySelectorAll('#navTabs .nav-btn').forEach(btn => {
+        const isSelected = btn.getAttribute('data-tab') === tabId;
+        const isLast = btn.getAttribute('data-tab') === 'm6';
+        const borderClass = isLast ? ' border-t lg:border-t border-gray-100' : '';
+        
+        if (isSelected) {
+          btn.className = "nav-btn bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold transition shadow-sm flex items-center gap-2" + borderClass;
+        } else {
+          btn.className = "nav-btn text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2" + borderClass;
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'header'],
+          ignoredClasses: ['katex', 'katex-html', 'katex-mathml', 'ignore-math', 'no-math'],
+          throwOnError: false
+        });
+      }
+
+      if (tabId === 'm6' && typeof hbChart !== 'undefined' && hbChart) {
+        setTimeout(() => hbChart.resize(), 150);
+      }
+    }
+
+    // Modal Handlers
+    function openFormulasModal() {
+      const modal = document.getElementById('modal-formulas');
+      if (modal) {
+        modal.classList.remove('hidden');
+        try {
+          if (typeof renderMathInElement === 'function') {
+            renderMathInElement(modal, {
+              delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false }
+              ],
+              throwOnError: false
+            });
+          }
+        } catch (e) {
+          console.warn('KaTeX render warning:', e);
+        }
+      }
+    }
+
+    function closeFormulasModal() {
+      const modal = document.getElementById('modal-formulas');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function openTutorial() {
+      const modal = document.getElementById('modal-tutorial');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeTutorial() {
+      const modal = document.getElementById('modal-tutorial');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // Renderizado de Fórmulas Matemáticas con KaTeX
+    function renderMathInDocument() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'header'],
+          ignoredClasses: ['katex', 'katex-html', 'katex-mathml', 'ignore-math', 'no-math'],
+          throwOnError: false
+        });
+      }
+    }
+
+    // =========================================================================
+    // SIMULADOR: BRONCOMOTRICIDAD (MÓDULO 2)
+    // =========================================================================
+    function setBronquio(estado) {
+      const lumen = document.getElementById('bronq-lumen');
+      const muscle = document.getElementById('bronq-muscle');
+      const flowText = document.getElementById('bronq-flow-text');
+      const statRadio = document.getElementById('stat-radio');
+      const statRes = document.getElementById('stat-resistencia');
+      const statTrabajo = document.getElementById('stat-trabajo');
+      const expl = document.getElementById('bronq-explanation');
+
+      // Resetear clases de botones
+      ['normal', 'para', 'adren'].forEach(k => {
+        const b = document.getElementById('btn-bronq-' + k);
+        if (b) {
+          b.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-700 text-slate-200 transition";
+        }
+      });
+
+      if (estado === 'normal') {
+        document.getElementById('btn-bronq-normal').className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white shadow transition";
+        lumen.style.width = "7rem";
+        lumen.style.height = "7rem";
+        muscle.style.borderWidth = "8px";
+        flowText.innerText = "Flujo: 100%";
+        statRadio.innerText = "1.00 r₀";
+        statRes.innerText = "1.0× Basal";
+        statTrabajo.innerText = "Fisiológico";
+        statTrabajo.className = "text-lg font-bold font-mono text-emerald-400";
+        expl.innerHTML = "<strong>Tono Basal Fisiológico:</strong> Equilibrio dinámico entre el tono colinérgico vago leve y la modulación simpática. La resistencia de la vía aérea es mínima (&lt; 2 cmH₂O/L/s).";
+      } else if (estado === 'para') {
+        document.getElementById('btn-bronq-para').className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 text-white shadow transition";
+        lumen.style.width = "3.2rem";
+        lumen.style.height = "3.2rem";
+        muscle.style.borderWidth = "16px";
+        flowText.innerText = "Flujo: 6%";
+        statRadio.innerText = "0.50 r₀";
+        statRes.innerText = "16.0× Basal";
+        statTrabajo.innerText = "Extremo (Disnea)";
+        statTrabajo.className = "text-lg font-bold font-mono text-rose-400";
+        expl.innerHTML = "<strong>Broncoespasmo Agudo (Asma/Acetilcolina):</strong> La contracción del músculo liso bronquiolar reduce el radio a la mitad ($r = 0.5$). Según la <strong>Ley de Poiseuille</strong>, la resistencia se multiplica por 16 ($1/0.5^4 = 16$), colapsando el flujo aéreo y requiriendo uso de musculatura accesoria.";
+      } else if (estado === 'adren') {
+        document.getElementById('btn-bronq-adren').className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white shadow transition";
+        lumen.style.width = "8.2rem";
+        lumen.style.height = "8.2rem";
+        muscle.style.borderWidth = "4px";
+        flowText.innerText = "Flujo: 140%";
+        statRadio.innerText = "1.20 r₀";
+        statRes.innerText = "0.48× Basal";
+        statTrabajo.innerText = "Mínimo";
+        statTrabajo.className = "text-lg font-bold font-mono text-cyan-400";
+        expl.innerHTML = "<strong>Broncodilatación Simpática (Adrenalina / Agonistas $\\beta_2$):</strong> Relajación rápida de la musculatura lisa bronquial. El incremento luminal disminuye la resistencia a la mitad, restituyendo el flujo aéreo durante situaciones de alarma o en el tratamiento de rescate del asma.";
+      }
+
+      if (window.renderMathInElement) {
+        renderMathInElement(expl, {
+          delimiters: [{ left: '$', right: '$', display: false }],
+          throwOnError: false
+        });
+      }
+    }
+
+    // =========================================================================
+    // SIMULADOR: MECÁNICA PLEURAL Y NEUMOTÓRAX (MÓDULO 3)
+    // =========================================================================
+    let neumotoraxActivo = false;
+
+    function toggleNeumotorax() {
+      neumotoraxActivo = !neumotoraxActivo;
+      const estadoP = document.getElementById('estado-pleura');
+      const valPip = document.getElementById('val-pip');
+      const valPulm = document.getElementById('val-pulm');
+      const pulmVis = document.getElementById('pulmon-visual');
+      const toraxVis = document.getElementById('torax-visual');
+      const cavidadVis = document.getElementById('cavidad-pleural-visual');
+      const aireBadge = document.getElementById('aire-intrapleural-badge');
+      const btn = document.getElementById('btn-neumotorax');
+      const desc = document.getElementById('neumo-desc');
+
+      if (neumotoraxActivo) {
+        btn.innerText = "Restituir Vacío Pleural (Drenaje)";
+        btn.className = "w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white shadow transition flex items-center justify-center gap-2";
+        estadoP.innerText = "Neumotórax Traumático Abierto";
+        estadoP.className = "text-sm font-bold text-rose-600";
+        valPip.innerText = "0 mmHg (Patm)";
+        valPip.className = "text-xl font-bold font-mono text-rose-600";
+        valPulm.innerText = "Colapsado (Atelectasia)";
+        valPulm.className = "text-sm font-semibold text-rose-700";
+
+        pulmVis.style.transform = "scale(0.55)";
+        pulmVis.style.opacity = "0.7";
+        toraxVis.style.transform = "scale(1.05)";
+        cavidadVis.style.backgroundColor = "rgba(254, 226, 226, 0.7)";
+        aireBadge.classList.remove('hidden');
+
+        desc.innerHTML = "<strong>Colapso Pulmonar Inmediato:</strong> La perforación parietal o visceral permite el ingreso súbito de aire ambiental ($760\\,\\text{mmHg}$) a la cavidad pleural. Se anula la presión subatmosférica ($P_{\\text{ip}} = 0\\,\\text{mmHg}$). Al perderse el acoplamiento físico, la <strong>retracción elástica pulmonar</strong> colapsa el parénquima, mientras que la jaula torácica se expande ligeramente.";
+      } else {
+        btn.innerText = "Simular Entrada de Aire (Punción Torácica)";
+        btn.className = "w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow transition flex items-center justify-center gap-2";
+        estadoP.innerText = "Fisiológico (Acople Íntegro)";
+        estadoP.className = "text-sm font-bold text-emerald-600";
+        valPip.innerText = "-4 mmHg (-5 cmH₂O)";
+        valPip.className = "text-xl font-bold font-mono text-sky-600";
+        valPulm.innerText = "Expandido y Traccionado";
+        valPulm.className = "text-sm font-semibold text-slate-700";
+
+        pulmVis.style.transform = "scale(1)";
+        pulmVis.style.opacity = "1";
+        toraxVis.style.transform = "scale(1)";
+        cavidadVis.style.backgroundColor = "transparent";
+        aireBadge.classList.add('hidden');
+
+        desc.innerHTML = "<strong>Integridad de la Presión Negativa Intrapleural:</strong> Los pulmones poseen una fuerza elástica natural de retracción hacia adentro, mientras que la jaula torácica tiende a expandirse hacia afuera. La capa líquida pleural sella ambas pleuras generando una <strong>presión subatmosférica continua</strong> ($P_{\\text{ip}} \\approx -4\\,\\text{mmHg}$) que tracciona los alvéolos e impide su atelectasia.";
+      }
+
+      if (window.renderMathInElement) {
+        renderMathInElement(desc, {
+          delimiters: [{ left: '$', right: '$', display: false }],
+          throwOnError: false
+        });
+      }
+    }
+
+    // =========================================================================
+    // SIMULADOR: CALCULADORA DE LEY DE FICK (MÓDULO 4)
+    // =========================================================================
+    function calcularFick() {
+      const area = parseFloat(document.getElementById('slider-area').value);
+      const espesor = parseFloat(document.getElementById('slider-espesor').value);
+      const dP = parseFloat(document.getElementById('slider-dp').value);
+
+      document.getElementById('val-area').innerText = area + " m²";
+      document.getElementById('val-espesor').innerText = espesor.toFixed(1) + " µm";
+      document.getElementById('val-dp').innerText = dP + " mmHg";
+
+      // Ley de Fick: V' = (A * ΔP) / T (relativo a valores fisiológicos: A=70, T=0.5, ΔP=64)
+      const tasaNormal = (70.0 * 64.0) / 0.5;
+      const tasaActual = (area * dP) / espesor;
+      const porcentaje = (tasaActual / tasaNormal) * 100.0;
+
+      const resElem = document.getElementById('fick-resultado');
+      const barElem = document.getElementById('fick-bar');
+      const conclElem = document.getElementById('fick-conclusion');
+
+      resElem.innerText = porcentaje.toFixed(0) + "%";
+      barElem.style.width = Math.min(porcentaje, 150) + "%";
+
+      if (porcentaje < 50) {
+        resElem.className = "text-2xl font-bold font-mono text-rose-600";
+        barElem.className = "bg-rose-500 h-2.5 rounded-full transition-all duration-300";
+        conclElem.innerText = "Hipoxemia Severa: Transporte difusivo críticamente insuficiente. Simula fibrosis intersticial masiva, edema agudo de pulmón o destrucción enfisematosa de tabiques alveolares.";
+      } else if (porcentaje < 85) {
+        resElem.className = "text-2xl font-bold font-mono text-amber-600";
+        barElem.className = "bg-amber-500 h-2.5 rounded-full transition-all duration-300";
+        conclElem.innerText = "Compromiso de Hematosis: Difusión subóptima. En reposo puede mantener saturación marginal, pero desencadena hipoxia tisular durante el ejercicio.";
+      } else {
+        resElem.className = "text-2xl font-bold font-mono text-emerald-600";
+        barElem.className = "bg-emerald-500 h-2.5 rounded-full transition-all duration-300";
+        conclElem.innerText = "Difusión Fisiológica Óptima: Parámetros dentro del rango hemodinámico ideal para la oxigenación completa de la sangre capilar en $\\approx 0.25\\,\\text{s}$.";
+      }
+
+      if (window.renderMathInElement) {
+        renderMathInElement(conclElem, {
+          delimiters: [{ left: '$', right: '$', display: false }],
+          throwOnError: false
+        });
+      }
+    }
+
+    // =========================================================================
+    // SIMULADOR: CURVA DE DISOCIACIÓN DE HEMOGLOBINA Y EFECTO BOHR (MÓDULO 6)
+    // =========================================================================
+    let hbChart = null;
+
+    function hillSaturation(pO2, p50) {
+      if (pO2 <= 0) return 0;
+      const n = 2.7; // Coeficiente de Hill para la cooperatividad positiva tetramérica
+      const pO2n = Math.pow(pO2, n);
+      const p50n = Math.pow(p50, n);
+      return (pO2n / (pO2n + p50n)) * 100.0;
+    }
+
+    function initHbChart() {
+      const ctx = document.getElementById('hbCurveChart').getContext('2d');
+      const labels = [];
+      const normalData = [];
+
+      for (let p = 0; p <= 120; p += 2) {
+        labels.push(p);
+        normalData.push(hillSaturation(p, 26.6));
+      }
+
+      hbChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Curva Fisiológica Estándar (pH 7.40, 37°C, PCO₂ 40)',
+              data: normalData,
+              borderColor: '#94a3b8',
+              borderWidth: 2,
+              borderDash: [5, 5],
+              pointRadius: 0,
+              fill: false
+            },
+            {
+              label: 'Curva Dinámica del Paciente',
+              data: [...normalData],
+              borderColor: '#0284c7',
+              borderWidth: 3,
+              pointRadius: 0,
+              fill: true,
+              backgroundColor: 'rgba(2, 132, 199, 0.08)'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            intersect: false,
+            mode: 'index',
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Presión Parcial de Oxígeno - PO₂ (mmHg)',
+                color: '#475569',
+                font: { family: 'Outfit', weight: 'bold', size: 11 }
+              },
+              grid: { color: '#e2e8f0' }
+            },
+            y: {
+              min: 0,
+              max: 105,
+              title: {
+                display: true,
+                text: 'Saturación de Hemoglobina - % HbO₂',
+                color: '#475569',
+                font: { family: 'Outfit', weight: 'bold', size: 11 }
+              },
+              grid: { color: '#e2e8f0' }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { font: { family: 'Outfit', size: 11 } }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  return ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function actualizarCurvaHb() {
+      const ph = parseFloat(document.getElementById('slider-ph').value);
+      const temp = parseFloat(document.getElementById('slider-temp').value);
+      const pco2 = parseFloat(document.getElementById('slider-pco2').value);
+
+      document.getElementById('lbl-ph').innerText = ph.toFixed(2);
+      document.getElementById('lbl-temp').innerText = temp.toFixed(1) + " °C";
+      document.getElementById('lbl-pco2').innerText = pco2 + " mmHg";
+
+      // Cálculo de variación de P50
+      let deltaP50 = 0;
+      deltaP50 += (7.40 - ph) * 35;
+      deltaP50 += (temp - 37.0) * 1.5;
+      deltaP50 += (pco2 - 40.0) * 0.2;
+
+      let p50Actual = 26.6 + deltaP50;
+      if (p50Actual < 14) p50Actual = 14;
+      if (p50Actual > 55) p50Actual = 55;
+
+      const dynamicData = [];
+      for (let p = 0; p <= 120; p += 2) {
+        dynamicData.push(hillSaturation(p, p50Actual));
+      }
+
+      if (hbChart) {
+        hbChart.data.datasets[1].data = dynamicData;
+
+        const bohrBadge = document.getElementById('bohr-badge');
+        const bohrDir = document.getElementById('bohr-dir');
+        const bohrDesc = document.getElementById('bohr-desc');
+
+        if (p50Actual > 28.5) {
+          // Desviación a la DERECHA
+          hbChart.data.datasets[1].borderColor = '#be123c';
+          hbChart.data.datasets[1].backgroundColor = 'rgba(190, 18, 60, 0.08)';
+          bohrBadge.className = "p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-900";
+          bohrDir.innerText = `Desviación a la DERECHA (P₅₀ = ${p50Actual.toFixed(1)} mmHg)`;
+          bohrDesc.innerText = "Disminuye la afinidad de la Hb por el O₂. Estimulada por acidosis (H⁺), hipercapnia (CO₂) y calor. Facilita la descarga masiva de oxígeno en tejidos periféricos con alto metabolismo.";
+        } else if (p50Actual < 24.5) {
+          // Desviación a la IZQUIERDA
+          hbChart.data.datasets[1].borderColor = '#0369a1';
+          hbChart.data.datasets[1].backgroundColor = 'rgba(3, 105, 161, 0.08)';
+          bohrBadge.className = "p-3 rounded-xl bg-sky-50 border border-sky-200 text-xs text-sky-900";
+          bohrDir.innerText = `Desviación a la IZQUIERDA (P₅₀ = ${p50Actual.toFixed(1)} mmHg)`;
+          bohrDesc.innerText = "Aumenta la afinidad de la Hb por el O₂. Estimulada por alcalosis (pH elevado), hipocapnia e hipotermia. La Hb retiene con más fuerza el oxígeno, dificultando su liberación tisular.";
+        } else {
+          // Fisiológico
+          hbChart.data.datasets[1].borderColor = '#0284c7';
+          hbChart.data.datasets[1].backgroundColor = 'rgba(2, 132, 199, 0.08)';
+          bohrBadge.className = "p-3 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-700";
+          bohrDir.innerText = `Posición Fisiológica Normal (P₅₀ = ${p50Actual.toFixed(1)} mmHg)`;
+          bohrDesc.innerText = "Equilibrio hemodinámico normal en reposo. Permite saturación del ~98% en el capilar pulmonar y cesión adecuada en los lechos tisulares periféricos.";
+        }
+
+        hbChart.update();
+      }
+    }
+
+    function resetearBohr() {
+      document.getElementById('slider-ph').value = 7.40;
+      document.getElementById('slider-temp').value = 37.0;
+      document.getElementById('slider-pco2').value = 40;
+      actualizarCurvaHb();
+    }
+
+    window.onload = function() {
+      initHbChart();
+      setBronquio('normal');
+      calcularFick();
+      cambiarModulo('m1');
+      setTimeout(renderMathInDocument, 200);
+    };
+  </script>
+</body>
+</html>
